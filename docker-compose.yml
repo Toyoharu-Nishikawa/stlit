@@ -1,0 +1,27 @@
+version: '3'
+services:
+  pyapi:
+    build:
+      context: ./pyapi
+    restart: always 
+    volumes:
+      - ./pysrc:/usr/src
+    working_dir: '/usr/src'
+    command: streamlit hello 
+#    command: streamlit run server.py
+    networks:
+      - default
+ 
+  web:
+    image: nginx:alpine
+    restart: always 
+    volumes:
+      - ./public:/usr/share/nginx/html
+      - ./conf.d:/etc/nginx/conf.d
+    networks:
+      - neco_link
+      - default
+networks:
+  neco_link:
+    external: true
+
